@@ -1,15 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+##The purpose of writing the pair of functions is to cache the inverse of a matrix so 
+##that we do not need to repeatedly compute the inversion of a matrix.
 
-## Write a short comment describing this function
+## Create a matrix object that can cache its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        im <- NULL
+        set <- function(y) {
+                x <<- y
+                im <<- NULL
+        }
+        get <- function() x
+        setInverseMatrix <- function(solve) 
+                im <<- solve
+        getInverseMatrix <- function() im
+        list(set = set, get = get,
+             setInverseMatrix =  setInverseMatrix,
+             getInverseMatrix =  getInverseMatrix)
 }
 
 
-## Write a short comment describing this function
+## use R function solve to compute the inverse of the matrix object returned by makeCacheMatrix above.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        im <- x$getInverseMatrix()
+        if(!is.null(im)) {
+                message("getting cached data")
+                return(im)
+        }
+        data <- x$get()
+        im <- solve(data, ...)
+        x$setInverseMa(im)
+        im
 }
